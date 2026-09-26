@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "project": "PepaWorld 3.0",
+  "generatedAt": null,
+  "status": "not_configured",
+  "server": {
+    "online": null,
+    "playersOnline": null,
+    "maxPlayers": null
+  },
+  "mod": {
+    "name": "Statistics",
+    "version": null
+  }
+}
