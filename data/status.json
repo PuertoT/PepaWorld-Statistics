@@ -1,15 +1,1 @@
-{
-  "schema": 1,
-  "project": "PepaWorld 3.0",
-  "generatedAt": null,
-  "status": "not_configured",
-  "server": {
-    "online": null,
-    "playersOnline": null,
-    "maxPlayers": null
-  },
-  "mod": {
-    "name": "Statistics",
-    "version": null
-  }
-}
+{"schema":1,"project":"PepaWorld 3.0","generatedAt":"2026-09-27T09:58:07.037263663Z","status":"online","server":{"online":true,"playersOnline":0,"maxPlayers":20},"mod":{"name":"Statistics","version":"0.2.0"}}
