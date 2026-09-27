@@ -1,0 +1,35 @@
+name: Sync public PepaWorld data
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-public-data-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'PuertoT/PepaWorld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: main
+          persist-credentials: true # Built-in GITHUB_TOKEN, scoped to this job/repository
+      - name: Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - name: Verify validators and failure handling
+        run: node --test tests/*.test.mjs
+      - name: Download and validate the complete public snapshot
+        run: node scripts/sync-public-data.mjs
+      - name: Commit only changed public data and push main
+        run: node scripts/publish-public-data.mjs
