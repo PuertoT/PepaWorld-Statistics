@@ -8,7 +8,7 @@ Comando: `node --test tests/*.test.mjs` (Node 24 local; Node 22 en Actions).
 
 24 pruebas aprobadas localmente. Incluyen actualización de tres documentos y push a un repositorio bare aislado; mismo contenido sin commit; JSON roto en el segundo documento sin publicación parcial; schema incorrecto; project incorrecto; campo privado anidado; generatedAt ausente o fecha imposible; logro oculto; campo desconocido; arrays inválidos; números inseguros; conexión fallida; offline válido; guardia recursiva; fechas UTC antiguas y nanosegundos; HTTP 301/302/404/500/503; HTML, UTF-8 inválido y tamaño excesivo; cambios staged ajenos bloqueados; estructura del workflow.
 
-La comprobación estática de workflow_dispatch no se confunde con una sincronización real correcta. El resultado remoto de la ejecución manual se recoge en la entrega.
+Ejecución manual real [36307483574](https://github.com/PuertoT/PepaWorld-Statistics/actions/runs/36307483574): checkout y Node correctos, las 24 pruebas también pasan en Ubuntu 24.04/Node 22. La descarga falla porque las rutas nuevas no están desplegadas; commit/push queda omitido. Los JSON del repositorio permanecen idénticos a los originales. Esto verifica el dispatcher y la conservación remota, pero no una sincronización real exitosa de datos del servidor.
 
 ## HTTP local con bibliotecas reales
 
@@ -28,6 +28,6 @@ La preparación detectó y corrigió diferencias reales de Rhino/TinyServer: pat
 | H | Sin cambios, sin commit | Git bare local |
 | I/J/K/L | JSON, esquema, proyecto, privacidad | Node + conservación de archivos/commit |
 | M/N | Endpoint caído o mezcla válida/rota | Node + ningún reemplazo ni commit |
-| O | Dispatcher real | Ver ejecución remota en entrega; éxito final depende de HTTP desplegado |
+| O | Dispatcher real ejecutado, tests correctos, descarga falla y push omitido | Éxito final pendiente de HTTP desplegado |
 
 No se ha modificado producción ni publicado datos de prueba. No se certifica una sincronización real completa hasta que las tres rutas HTTPS sirvan los JSON del servidor.

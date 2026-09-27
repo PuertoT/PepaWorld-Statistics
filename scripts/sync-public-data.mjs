@@ -8,25 +8,26 @@ export const BASE_URL = 'https://stats-pepaworld.minecra.fr/';
 export async function download(name, fetcher = fetch) {
   if (!FILES.includes(name)) throw new Error('Unsupported document');
   let response;
+  let reason = 'network, TLS, timeout or redirect';
   try {
     response = await fetcher(BASE_URL + name, {redirect: 'error', signal: AbortSignal.timeout(20000),
       headers: {Accept: 'application/json', 'Cache-Control': 'no-cache'}});
-    if (response.status !== 200) throw new Error(`HTTP ${response.status}`);
-    if (!/^application\/json(?:\s*;|$)/i.test(response.headers.get('content-type') ?? '')) throw new Error('Content-Type');
+    if (response.status !== 200) { reason = `HTTP ${response.status}`; throw new Error(); }
+    if (!/^application\/json(?:\s*;|$)/i.test(response.headers.get('content-type') ?? '')) { reason = 'invalid Content-Type'; throw new Error(); }
     const length = response.headers.get('content-length');
-    if (length !== null && (!/^\d+$/.test(length) || Number(length) > MAX_BYTES)) throw new Error('Size');
+    if (length !== null && (!/^\d+$/.test(length) || Number(length) > MAX_BYTES)) { reason = 'Content-Length limit'; throw new Error(); }
     let size = 0;
     const chunks = [];
-    if (!response.body) throw new Error('Empty body');
+    if (!response.body) { reason = 'empty response body'; throw new Error(); }
     for await (const chunk of response.body) {
       size += chunk.byteLength;
-      if (size > MAX_BYTES) throw new Error('Size');
+      if (size > MAX_BYTES) { reason = 'body size limit'; throw new Error(); }
       chunks.push(Buffer.from(chunk));
     }
     return Buffer.concat(chunks);
   } catch {
     try { await response?.body?.cancel(); } catch { /* Body may already be closed. */ }
-    throw new Error(`Download failed: ${name} (HTTP, timeout, redirect, type or size). Existing data preserved.`);
+    throw new Error(`Download failed: ${name} (${reason}). Existing data preserved.`);
   }
 }
 
