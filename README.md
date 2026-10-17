@@ -26,4 +26,4 @@ Consulta [arquitectura y workflow](docs/synchronization.md) y [pruebas y límite
 
 ## Cierre temporal y regreso
 
-El cierre está anunciado para el 13 de octubre de 2026, sin hora confirmada. La preparación no pausa el servicio. Seguir [el procedimiento de pausa y reactivación](docs/pause-resume.md) cuando se confirme el cierre real. Noviembre es orientativo: no se programa una reactivación automática.
+El cierre está anunciado para el 13 de octubre de 2026, sin hora confirmada. 
