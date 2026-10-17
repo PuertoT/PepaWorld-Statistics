@@ -6,6 +6,8 @@ import {join} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {FILES, MAX_BYTES, validate, privacyGuard, validTimestamp} from '../scripts/validate-public-data.mjs';
 import {sync, download, BASE_URL} from '../scripts/sync-public-data.mjs';
+import {isPaused} from '../scripts/statistics-lifecycle.mjs';
+import {fileURLToPath} from 'node:url';
 import {publish} from '../scripts/publish-public-data.mjs';
 
 // Synthetic fixtures stay in isolated temporary repositories; never copied into project data/.
@@ -109,6 +111,7 @@ test('publishing refuses unrelated changes or staged files', async t => {
 });
 test('workflow has manual and scheduled runs; only minimal token permissions', async () => {
   const yaml = await readFile(new URL('../.github/workflows/sync-public-data.yml', import.meta.url), 'utf8');
-  for (const text of ['workflow_dispatch:', "cron: '*/5 * * * *'", 'contents: write', 'cancel-in-progress: false', 'timeout-minutes: 5']) assert.ok(yaml.includes(text));
+  for (const text of ['workflow_dispatch:', 'contents: write', 'cancel-in-progress: false', 'timeout-minutes: 5']) assert.ok(yaml.includes(text));
+  assert.equal(yaml.includes("cron: '*/5 * * * *'"), !await isPaused(fileURLToPath(new URL('../', import.meta.url))));
   assert.ok(!/secrets\.|force|pull_request_target/.test(yaml));
 });

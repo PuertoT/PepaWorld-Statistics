@@ -1,8 +1,6 @@
 name: Sync public PepaWorld data
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 permissions:

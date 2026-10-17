@@ -1,6 +1,12 @@
 # Sincronización de datos públicos
 
-## Arquitectura y estado de entrega
+## Estado comprobado el 10 de octubre de 2026
+
+La [ejecución 38072491066](https://github.com/PuertoT/PepaWorld-Statistics/actions/runs/38072491066), iniciada a las 17:37:24 UTC, terminó con éxito. El JSON publicado indica online, 0 jugadores, Statistics 0.2.0 y exportación 17:35:49 UTC. No hay PR abiertos en la revisión inicial. La sincronización ya está operativa; las referencias a endpoints pendientes que siguen abajo documentan la entrega original, no el estado actual.
+
+Para el cierre anunciado el 13 de octubre, seguir [pausa y regreso](pause-resume.md). La copia del servidor ya está descargada y no se repite.
+
+## Arquitectura y registro histórico de entrega
 
 Statistics 0.2.0 escribe `pepaworld-public/*.json` dentro del directorio del servidor. El servicio TinyServer existente debe añadir tres rutas explícitas. El dominio HTTPS expone esos JSON; GitHub Actions los descarga, valida los tres y publica un único commit en este repositorio.
 

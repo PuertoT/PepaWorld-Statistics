@@ -1,11 +1,12 @@
 import {execFileSync} from 'node:child_process';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {readFileSync} from 'node:fs';
+import {readFileSync, existsSync} from 'node:fs';
 import {FILES, validate} from './validate-public-data.mjs';
 
 export function publish(repo) {
   const git = (...args) => execFileSync('git', args, {cwd: repo, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe']});
+  if (existsSync(resolve(repo, 'maintenance/paused.json'))) throw new Error('Statistics is paused; publication stopped');
   const paths = FILES.map(name => `data/${name}`);
   // Revalidate even if this script is invoked independently.
   for (const name of FILES) validate(name, readFileSync(resolve(repo, 'data', name)));

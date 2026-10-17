@@ -4,6 +4,8 @@ import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {FILES, MAX_BYTES, validate} from './validate-public-data.mjs';
 
+import {isPaused} from './statistics-lifecycle.mjs';
+
 export const BASE_URL = 'https://stats-pepaworld.minecra.fr/';
 export async function download(name, fetcher = fetch) {
   if (!FILES.includes(name)) throw new Error('Unsupported document');
@@ -32,6 +34,7 @@ export async function download(name, fetcher = fetch) {
 }
 
 export async function sync(repo, fetcher = fetch) {
+  if (await isPaused(repo)) throw new Error('Statistics is paused; no downloads or data changes allowed.');
   const staging = await mkdtemp(join(tmpdir(), 'pepaworld-public-'));
   const replacements = [];
   try {
